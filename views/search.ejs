@@ -1,0 +1,40 @@
+<% include ./partials/header.ejs %>
+    <div class="w-full min-h-screen bg-zinc-900 px-4 py-5">
+        <div class="border-2 border-zinc-800 flex items-center justify-between px-2 py-1 rounded-md">
+            <i class="text-white ri-search-line"></i>
+            <input class="input ml-1 w-full bg-zinc-900 outline-none text-zinc-400" type="text"
+                placeholder="search username">
+        </div>
+        <div class="users">
+
+        </div>
+    </div>
+
+    <script>
+        var inp = document.querySelector(".input")
+        let clutter=""
+        inp.addEventListener("input", function (e) {
+            clutter = " "
+            axios.get(`/search/${inp.value}`)
+                 .then(function(data){
+                 data.data.forEach((item)=>{
+             clutter += `<a href="/profile/${item.username}" class="outline-none">
+            <div class="text-white flex items-center gap-2 mt-5">
+                <div class="image w-[11vw] h-[11vw] rounded-full bg-sky-100 overflow-hidden">
+                    <img src="/images/uploads/${item.picture}" alt="">
+                    </div>
+                <div class="text">
+                    <h3>${item.username}</h3>
+                    <h4 class="text-xs opacity-30 leading-none">${item.name}</h4>
+                </div>
+            </div>            
+        </a>`
+                        })
+        document.querySelector(".users").innerHTML = clutter;
+                    })
+        })
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <% include ./partials/footer.ejs %>
